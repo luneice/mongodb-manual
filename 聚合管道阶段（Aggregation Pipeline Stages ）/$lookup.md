@@ -198,3 +198,6 @@ db.people.aggregate([
 ```
 
 [返回目录](#目录)
+
+### 更多
+[参见我在 stackoverflow 上的提问](https://stackoverflow.com/questions/55990413/limit-result-from-different-filed-after-graphlookup-pipeline-stage?noredirect=1#comment98632015_55990413)
