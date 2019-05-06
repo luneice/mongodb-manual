@@ -1,4 +1,4 @@
-# $lookup 策略 [官方文档](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+# $lookup 阶段 [官方文档](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
 
 ## 目录
 - [定义](#定义)
