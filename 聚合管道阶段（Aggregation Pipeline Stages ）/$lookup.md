@@ -24,7 +24,7 @@
     from: <外连接文档>,
     localField: <输入文档字段>,
     foreignField: <外连接文档字段>,
-    as: <聚合操作后输出字段名>
+    as: <聚合操作后输出结果的字段名>
   }
 }
 ```
@@ -90,13 +90,34 @@ db.people.aggregate([
 ```
 {  
   $lookup: {
-    from: <collection to join>,
-    let: { <var_1>: <expression>, …, <var_n>: <expression> },
-    pipeline: [ <pipeline to execute on the collection to join> ],
-    as: <output array field>
+    from: <外连接文档>,
+    // let 可有可无，与 ES6 let 相似，为管道声明变量。
+    let: { 
+      // 等同于 a = $a ，其中 a 为管道中要用到的变量，$ 表示对被连接文档字段的引用指令，$a 则对被连接文档字段 a 的引用。
+      <变量 1>: <引用 1>, 
+      ...
+      <变量 n>: <应用 n> },
+    // 管道中有很多处理阶段，此处的管道为嵌套管道，因为 $lookup 本身就是管道中的一个阶段
+    pipeline: [
+      {
+        // 匹配阶段，指定一些匹配的规则
+        // $match: { <query> }
+        $match: {
+          // 通过 $expr 操作访问 let 中定义的变量
+          $expr: {}
+        }
+      },
+    ],
+    as: <聚合操作后输出结果的字段名>
   }
 }
 ```
+
+> 官方文档指出：
+1.管道无法访问被连接文档的字段，因此使用 ```let``` 声明管道需要用到哪些被连接文档的字段。
+2.除 ```$out``` 和 ```$geoNear``` 阶段之外的所有阶段都可以在管道中多次出现。
+3. ```let``` 定义的变量可以被 ```pipeline``` 中其他阶段访问到，即使是嵌套在 ```pipeline``` 中的 ```$lookup`` 阶段。
+4. ```$match``` 阶段越早执行越好，即放在管道的最前面。因为 ```$match``` 限制了聚合管道中的文档总数，因此越早执行 ```$match``` 阶段可以最大限度地减少管道的处理量。 ```$match``` 如果放在了管道的开始，那么 ```$match``` 阶段中 ```query``` 就会利用索引的优势查询，类似于 db.collection.find() 或 db.collection.findOne()。
 
 
 
