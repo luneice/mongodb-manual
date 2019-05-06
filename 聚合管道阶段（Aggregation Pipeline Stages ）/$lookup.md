@@ -2,7 +2,8 @@
 
 ## 目录
 - [定义](#定义)
-- [语法](#语法)
+- [基本语法](#基本语法)
+- [复杂语法 1](#复杂语法 1)
 - [更多](#更多)
 ----------
 
@@ -15,7 +16,7 @@
 
 [返回目录](#目录)
 
-### 语法
+### 基本语法
 
 ```
 {
@@ -84,3 +85,43 @@ db.people.aggregate([
 [返回目录](#目录)
 
 > 你一定会想到，如果 ```people``` 中 ```likes``` 字段元素太多，那么聚合后的 ```likes``` 结果会很大，但我只想得到指定的大小，该怎么操作？
+
+### 复杂语法 1
+```
+{  
+  $lookup: {
+    from: <collection to join>,
+    let: { <var_1>: <expression>, …, <var_n>: <expression> },
+    pipeline: [ <pipeline to execute on the collection to join> ],
+    as: <output array field>
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
